@@ -40,7 +40,7 @@ import { TradeAggregationCallBuilder } from "./trade_aggregation_call_builder";
 import { TradesCallBuilder } from "./trades_call_builder";
 import { TransactionCallBuilder } from "./transaction_call_builder";
 
-import { AxiosAdapter } from "axios";
+import fetchAdapter from "@vespaiach/axios-fetch-adapter";
 import HorizonAxiosClient, {
   getCurrentServerTime,
 } from "./horizon_axios_client";
@@ -76,14 +76,10 @@ export class Server {
    */
   public readonly serverURL: URI;
 
-  constructor(
-    serverURL: string,
-    opts: Server.Options = {},
-    adapter: AxiosAdapter,
-  ) {
+  constructor(serverURL: string, opts: Server.Options = {}) {
     this.serverURL = URI(serverURL);
 
-    HorizonAxiosClient.defaults.adapter = adapter;
+    HorizonAxiosClient.defaults.adapter = fetchAdapter;
 
     const allowHttp =
       typeof opts.allowHttp === "undefined"
