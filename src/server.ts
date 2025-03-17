@@ -40,6 +40,7 @@ import { TradeAggregationCallBuilder } from "./trade_aggregation_call_builder";
 import { TradesCallBuilder } from "./trades_call_builder";
 import { TransactionCallBuilder } from "./transaction_call_builder";
 
+import { AxiosAdapter } from "axios";
 import HorizonAxiosClient, {
   getCurrentServerTime,
 } from "./horizon_axios_client";
@@ -75,8 +76,14 @@ export class Server {
    */
   public readonly serverURL: URI;
 
-  constructor(serverURL: string, opts: Server.Options = {}) {
+  constructor(
+    serverURL: string,
+    opts: Server.Options = {},
+    adapter: AxiosAdapter,
+  ) {
     this.serverURL = URI(serverURL);
+
+    HorizonAxiosClient.defaults.adapter = adapter;
 
     const allowHttp =
       typeof opts.allowHttp === "undefined"
